@@ -1,0 +1,72 @@
+﻿export interface WeeklyPlanning {
+  id?: number;
+  school_name: string;
+  teacher_name: string;
+  segment: string;
+  week_date: string;
+  monday_reading: string;
+  monday_learning_objectives: string;
+  monday_pedagogical_proposal: string;
+  monday_development: string;
+  monday_specialists_schedule: string;
+  tuesday_reading: string;
+  tuesday_learning_objectives: string;
+  tuesday_pedagogical_proposal: string;
+  tuesday_development: string;
+  tuesday_specialists_schedule: string;
+  wednesday_reading: string;
+  wednesday_learning_objectives: string;
+  wednesday_pedagogical_proposal: string;
+  wednesday_development: string;
+  wednesday_specialists_schedule: string;
+  thursday_reading: string;
+  thursday_learning_objectives: string;
+  thursday_pedagogical_proposal: string;
+  thursday_development: string;
+  thursday_specialists_schedule: string;
+  friday_reading: string;
+  friday_learning_objectives: string;
+  friday_pedagogical_proposal: string;
+  friday_development: string;
+  friday_specialists_schedule: string;
+  weekly_report: string;
+  materials_request: string;
+  coordinator_feedback: string;
+}
+
+export function createEmptyWeeklyPlanning(): WeeklyPlanning {
+  return {
+    school_name: '',
+    teacher_name: '',
+    segment: '',
+    week_date: '',
+    monday_reading: '',
+    monday_learning_objectives: '',
+    monday_pedagogical_proposal: '',
+    monday_development: '',
+    monday_specialists_schedule: '',
+    tuesday_reading: '',
+    tuesday_learning_objectives: '',
+    tuesday_pedagogical_proposal: '',
+    tuesday_development: '',
+    tuesday_specialists_schedule: '',
+    wednesday_reading: '',
+    wednesday_learning_objectives: '',
+    wednesday_pedagogical_proposal: '',
+    wednesday_development: '',
+    wednesday_specialists_schedule: '',
+    thursday_reading: '',
+    thursday_learning_objectives: '',
+    thursday_pedagogical_proposal: '',
+    thursday_development: '',
+    thursday_specialists_schedule: '',
+    friday_reading: '',
+    friday_learning_objectives: '',
+    friday_pedagogical_proposal: '',
+    friday_development: '',
+    friday_specialists_schedule: '',
+    weekly_report: '',
+    materials_request: '',
+    coordinator_feedback: '',
+  };
+}
