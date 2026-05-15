@@ -62,7 +62,7 @@
                 </button>
                 <button
                   type="button"
-                  @click="handleDelete(plan.id!)"
+                  @click="confirmDelete(plan.id!)"
                   :disabled="loading"
                   title="Excluir plano"
                   class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-red-600 text-white transition hover:bg-red-500 disabled:cursor-not-allowed disabled:opacity-50"
@@ -83,8 +83,8 @@
         </div>
       </div>
 
-      <div v-if="selectedPlan" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
-        <div class="w-full max-w-3xl overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900">
+      <div v-if="selectedPlan" @click.self="closeDetails" @keydown.window.escape="closeDetails" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 px-4 py-6">
+        <div class="w-full max-w-3xl overflow-hidden rounded-3xl bg-white shadow-2xl dark:bg-slate-900" @click.stop>
           <div class="flex items-start justify-between gap-4 border-b border-slate-200 p-6 dark:border-slate-700">
             <div>
               <p class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">{{ selectedPlan.segment || 'Segmento não informado' }}</p>
@@ -169,6 +169,17 @@
           </div>
         </div>
       </div>
+
+      <DeleteConfirmationModal
+        :visible="deletingPlanId !== null"
+        title="Excluir plano"
+        message="Tem certez que deseja excluir esse plano?"
+        confirmLabel="Sim, excluir"
+        cancelLabel="Cancelar"
+        :isLoading="loading"
+        @confirm="deleteConfirmed"
+        @cancel="cancelDelete"
+      />
     </div>
   </Layout>
 </template>
@@ -177,6 +188,7 @@
 import { onMounted, ref } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import Layout from '../components/Layout.vue';
+import DeleteConfirmationModal from '../components/ui/DeleteConfirmationModal.vue';
 import type { WeeklyPlanning } from '../types/WeeklyPlanning';
 import { deleteWeeklyPlanning, listWeeklyPlannings } from '../services/weeklyPlanningService';
 
@@ -184,6 +196,7 @@ const plans = ref<WeeklyPlanning[]>([]);
 const loading = ref(false);
 const notification = ref('');
 const selectedPlan = ref<WeeklyPlanning | null>(null);
+const deletingPlanId = ref<number | null>(null);
 
 async function loadPlannings() {
   loading.value = true;
@@ -206,9 +219,16 @@ function closeDetails() {
   selectedPlan.value = null;
 }
 
-async function handleDelete(id: number) {
-  const confirmed = window.confirm('Deseja realmente excluir este plano?');
-  if (!confirmed) {
+function confirmDelete(id: number) {
+  deletingPlanId.value = id;
+}
+
+function cancelDelete() {
+  deletingPlanId.value = null;
+}
+
+async function deleteConfirmed() {
+  if (deletingPlanId.value === null) {
     return;
   }
 
@@ -216,11 +236,12 @@ async function handleDelete(id: number) {
   notification.value = '';
 
   try {
-    await deleteWeeklyPlanning(id);
+    await deleteWeeklyPlanning(deletingPlanId.value);
     notification.value = 'Plano excluído com sucesso.';
-    if (selectedPlan.value?.id === id) {
+    if (selectedPlan.value?.id === deletingPlanId.value) {
       selectedPlan.value = null;
     }
+    deletingPlanId.value = null;
     await loadPlannings();
   } catch (error) {
     notification.value = 'Não foi possível excluir o plano. Tente novamente.';
