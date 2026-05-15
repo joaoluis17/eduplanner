@@ -20,10 +20,10 @@ return new class extends Migration
             |--------------------------------------------------------------------------
             */
 
-            $table->string('school_name')->nullable();
-            $table->string('teacher_name')->nullable();
-            $table->string('segment')->nullable();
-            $table->date('week_date')->nullable();
+            $table->string('school_name');
+            $table->string('teacher_name');
+            $table->string('segment');
+            $table->date('week_date');
 
             /*
             |--------------------------------------------------------------------------

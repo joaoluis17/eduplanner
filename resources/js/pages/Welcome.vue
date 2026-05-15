@@ -7,7 +7,7 @@
           Sua aplicação de planejamento semanal está pronta. Clique abaixo para abrir o planejador ou para ver a listagem de planos.
         </p>
 
-        <div class="inline-flex space-x-2">
+        <div class="md:inline-flex space-x-2">
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
             <Link
               href="/weekly-planning"

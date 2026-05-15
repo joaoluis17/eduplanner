@@ -15,5 +15,9 @@ Route::get('weekly-planning', function () {
     return Inertia::render('WeeklyPlanning');
 })->name('weekly-planning');
 
+Route::get('planning-list', function () {
+    return Inertia::render('PlanningList');
+})->name('planning-list');
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

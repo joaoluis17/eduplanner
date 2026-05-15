@@ -50,10 +50,10 @@ class WeeklyPlanningController extends Controller
     private function rules(): array
     {
         return [
-            'school_name' => 'nullable|string|max:255',
-            'teacher_name' => 'nullable|string|max:255',
-            'segment' => 'nullable|string|max:255',
-            'week_date' => 'nullable|date',
+            'school_name' => 'required|string|max:255',
+            'teacher_name' => 'required|string|max:255',
+            'segment' => 'required|string|max:255',
+            'week_date' => 'required|date',
             'monday_reading' => 'nullable|string',
             'monday_learning_objectives' => 'nullable|string',
             'monday_pedagogical_proposal' => 'nullable|string',

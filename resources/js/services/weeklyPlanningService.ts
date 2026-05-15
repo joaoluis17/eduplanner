@@ -4,8 +4,30 @@ const API_BASE = '/api/weekly-plannings';
 
 async function parseResponse<T>(response: Response): Promise<T> {
   if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || 'Erro ao se comunicar com a API.');
+    const bodyText = await response.text();
+    let errorMessage = 'Erro ao se comunicar com a API.';
+    let errors: Record<string, string[]> | undefined;
+
+    try {
+      const parsed = JSON.parse(bodyText);
+      if (parsed?.message) {
+        errorMessage = parsed.message;
+      }
+      if (parsed?.errors) {
+        errors = parsed.errors;
+      }
+    } catch {
+      if (bodyText) {
+        errorMessage = bodyText;
+      }
+    }
+
+    const error = new Error(errorMessage) as Error & { errors?: Record<string, string[]> };
+    if (errors) {
+      error.errors = errors;
+    }
+
+    throw error;
   }
 
   if (response.status === 204) {
